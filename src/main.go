@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"tulongan-backend/src/controllers"
 	"tulongan-backend/src/tulonganutil"
 )
 
@@ -68,6 +69,10 @@ func graphQLHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	user := controllers.GetUser()
+
+	fmt.Println(user)
+
 	http.HandleFunc("/graphql", graphQLHandler)
 
 	log.Fatal(http.ListenAndServe(":3030", nil))
