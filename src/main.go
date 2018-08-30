@@ -9,7 +9,7 @@ import (
 	"log"
 	"net/http"
 	"tulongan-backend/src/controllers"
-	"tulongan-backend/src/tulonganutil"
+	"tulongan-backend/src/utils"
 )
 
 func graphQLHandler(w http.ResponseWriter, r *http.Request) {
@@ -54,7 +54,7 @@ func graphQLHandler(w http.ResponseWriter, r *http.Request) {
 
 	result := graphql.Do(
 		graphql.Params{
-			Schema:         tulonganutil.TulonganSchema,
+			Schema:         utils.TulonganSchema,
 			RequestString:  query.(string),
 			VariableValues: variables.(map[string]interface{}),
 		},

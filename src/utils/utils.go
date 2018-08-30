@@ -1,4 +1,4 @@
-package tulonganutil
+package utils
 
 import (
 	"github.com/graphql-go/graphql"
@@ -45,6 +45,12 @@ func init() {
 					return TestData, nil
 				},
 			},
+			// "user": &graphql.Field{
+			// 	Type: graphql.Object,
+			// 	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+
+			// 	}
+			// }
 		},
 	})
 
