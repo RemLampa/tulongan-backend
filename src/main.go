@@ -8,8 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"tulongan-backend/src/controllers"
-	"tulongan-backend/src/utils"
+	"tulongan-backend/src/schema"
 )
 
 func graphQLHandler(w http.ResponseWriter, r *http.Request) {
@@ -54,7 +53,7 @@ func graphQLHandler(w http.ResponseWriter, r *http.Request) {
 
 	result := graphql.Do(
 		graphql.Params{
-			Schema:         utils.TulonganSchema,
+			Schema:         schema.TulonganSchema,
 			RequestString:  query.(string),
 			VariableValues: variables.(map[string]interface{}),
 		},
@@ -69,11 +68,11 @@ func graphQLHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	user := controllers.GetUser()
-
-	fmt.Println(user)
+	port := ":3030"
 
 	http.HandleFunc("/graphql", graphQLHandler)
 
-	log.Fatal(http.ListenAndServe(":3030", nil))
+	fmt.Println("Server running at port", port)
+
+	log.Fatal(http.ListenAndServe(port, nil))
 }
