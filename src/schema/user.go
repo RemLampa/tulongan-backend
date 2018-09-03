@@ -8,6 +8,7 @@ import (
 
 var userType *graphql.Object
 var repoType *graphql.Object
+var createRepoType *graphql.InputObject
 
 var user *models.User
 
@@ -21,7 +22,7 @@ func initUserSchema() {
 				Description: "The owner of the repo",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					if repo, ok := p.Source.(models.Repository); ok {
-						return repo.RepoOwner, nil
+						return repo.Owner, nil
 					}
 
 					return nil, nil
@@ -32,7 +33,7 @@ func initUserSchema() {
 				Description: "The name of the repo",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					if repo, ok := p.Source.(models.Repository); ok {
-						return repo.RepoName, nil
+						return repo.Name, nil
 					}
 
 					return nil, nil
@@ -65,4 +66,19 @@ func initUserSchema() {
 			},
 		},
 	})
+
+	createRepoType = graphql.NewInputObject(graphql.InputObjectConfig{
+		Name: "CreateRepo",
+		Fields: graphql.InputObjectConfigFieldMap{
+			"owner": &graphql.InputObjectFieldConfig{
+				Type:        graphql.NewNonNull(graphql.String),
+				Description: "The owner of the repository",
+			},
+			"name": &graphql.InputObjectFieldConfig{
+				Type:        graphql.NewNonNull(graphql.String),
+				Description: "The name of the repository",
+			},
+		},
+	})
+
 }

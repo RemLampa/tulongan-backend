@@ -2,8 +2,8 @@ package models
 
 // Repository is the repo object
 type Repository struct {
-	RepoOwner string
-	RepoName  string
+	Owner string
+	Name  string
 }
 
 // User is the user object

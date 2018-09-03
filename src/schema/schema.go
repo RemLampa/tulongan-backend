@@ -2,6 +2,8 @@ package schema
 
 import (
 	"github.com/graphql-go/graphql"
+	"tulongan-backend/src/controllers"
+	"tulongan-backend/src/models"
 )
 
 // TulonganSchema is our application schema
@@ -22,7 +24,42 @@ func init() {
 		},
 	})
 
+	mutationType := graphql.NewObject(graphql.ObjectConfig{
+		Name: "Mutation",
+		Fields: graphql.Fields{
+			"createRepoMutation": &graphql.Field{
+				Type: graphql.NewList(repoType),
+				Args: graphql.FieldConfigArgument{
+					"repo": &graphql.ArgumentConfig{
+						Description: "The repository details",
+						Type:        graphql.NewNonNull(createRepoType),
+					},
+				},
+				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+					repo := p.Args["repo"].(map[string]interface{})
+
+					newRepo := models.Repository{
+						Owner: repo["owner"].(string),
+						Name:  repo["name"].(string),
+					}
+
+					u := controllers.NewUserController()
+
+					err := u.AddUserRepo(newRepo)
+					if err != nil {
+						return nil, err
+					}
+
+					repos := u.GetUserRepos()
+
+					return repos, nil
+				},
+			},
+		},
+	})
+
 	TulonganSchema, _ = graphql.NewSchema(graphql.SchemaConfig{
-		Query: queryType,
+		Query:    queryType,
+		Mutation: mutationType,
 	})
 }
