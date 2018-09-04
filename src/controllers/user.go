@@ -14,13 +14,9 @@ import (
 	"tulongan-backend/src/models"
 )
 
-// UserController handles user related operations
-type UserController struct {
-	User *models.User
-}
+var user *models.User = &models.User{}
 
-// NewUserController creates a new user controller
-func NewUserController() *UserController {
+func init() {
 	cwd, err := os.Getwd()
 	if err != nil {
 		log.Fatal("Could not get current working directory", err)
@@ -31,14 +27,20 @@ func NewUserController() *UserController {
 		log.Fatal("Could not read file.", err)
 	}
 
-	var user models.User
-
-	if err := json.Unmarshal(file, &user); err != nil {
+	if err := json.Unmarshal(file, user); err != nil {
 		log.Fatal("Error in converting file to JSON.", err)
 	}
+}
 
+// UserController handles user related operations
+type UserController struct {
+	User *models.User
+}
+
+// NewUserController creates a new user controller
+func NewUserController() *UserController {
 	userController := UserController{
-		User: &user,
+		User: user,
 	}
 
 	return &userController

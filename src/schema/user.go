@@ -10,8 +10,6 @@ var userType *graphql.Object
 var repoType *graphql.Object
 var createRepoType *graphql.InputObject
 
-var user *models.User
-
 func initUserSchema() {
 	repoType = graphql.NewObject(graphql.ObjectConfig{
 		Name:        "Repo",
