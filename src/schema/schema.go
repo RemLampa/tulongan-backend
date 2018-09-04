@@ -55,6 +55,29 @@ func init() {
 					return repos, nil
 				},
 			},
+			"deleteRepoMutation": &graphql.Field{
+				Type: graphql.NewList(repoType),
+				Args: graphql.FieldConfigArgument{
+					"id": &graphql.ArgumentConfig{
+						Description: "The ID of the repo to be deleted",
+						Type:        graphql.NewNonNull(graphql.Int),
+					},
+				},
+				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+					id := p.Args["id"].(int)
+
+					u := controllers.NewUserController()
+
+					err := u.DeleteUserRepo(id)
+					if err != nil {
+						return nil, err
+					}
+
+					repos := u.GetUserRepos()
+
+					return repos, nil
+				},
+			},
 		},
 	})
 

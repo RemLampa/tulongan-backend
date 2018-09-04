@@ -14,6 +14,7 @@ import (
 	"tulongan-backend/src/models"
 )
 
+// mock database
 var user *models.User = &models.User{}
 
 func init() {
@@ -105,6 +106,15 @@ func (u *UserController) AddUserRepo(newRepo models.Repository) error {
 	}
 
 	u.User.Repositories = append(u.User.Repositories, newRepo)
+
+	return nil
+}
+
+// DeleteUserRepo removes a repository with a given ID
+func (u *UserController) DeleteUserRepo(id int) error {
+	repos := &u.User.Repositories
+
+	*repos = append((*repos)[:id], (*repos)[id+1:]...)
 
 	return nil
 }

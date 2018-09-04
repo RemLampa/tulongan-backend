@@ -9,6 +9,7 @@ import (
 var userType *graphql.Object
 var repoType *graphql.Object
 var createRepoType *graphql.InputObject
+var deleteRepoType *graphql.InputObject
 
 func initUserSchema() {
 	repoType = graphql.NewObject(graphql.ObjectConfig{
@@ -78,5 +79,4 @@ func initUserSchema() {
 			},
 		},
 	})
-
 }
