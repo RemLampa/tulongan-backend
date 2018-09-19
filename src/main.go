@@ -24,11 +24,14 @@ func graphQLHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := r.Body.Close(); err != nil {
-		log.Fatalln("Error closing request body", err)
-	}
+	defer func() {
+		if err := r.Body.Close(); err != nil {
+			log.Fatalln("Error closing request body", err)
+		}
+	}()
 
 	fmt.Println("Successfully received request!")
+	fmt.Println(body)
 
 	var apolloQuery map[string]interface{}
 
@@ -48,6 +51,8 @@ func graphQLHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	fmt.Println(apolloQuery)
+
 	query := apolloQuery["query"]
 	variables := apolloQuery["variables"]
 
@@ -64,6 +69,8 @@ func graphQLHandler(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(&result)
 
+	fmt.Println(result)
+
 	return
 }
 
@@ -71,6 +78,7 @@ func main() {
 	port := ":3030"
 
 	http.HandleFunc("/graphql", graphQLHandler)
+	http.Handle("/playground/", http.StripPrefix("/playground/", http.FileServer(http.Dir("./graphql-playground"))))
 
 	fmt.Println("Server running at port", port)
 
