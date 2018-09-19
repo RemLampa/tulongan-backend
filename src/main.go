@@ -24,12 +24,6 @@ func graphQLHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	defer func() {
-		if err := r.Body.Close(); err != nil {
-			log.Fatalln("Error closing request body", err)
-		}
-	}()
-
 	fmt.Println("Successfully received request!")
 	fmt.Println(body)
 
