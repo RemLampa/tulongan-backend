@@ -14,6 +14,16 @@ import (
 func graphQLHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Vary", "Origin")
+	w.Header().Set("Vary", "Access-Control-Request-Method")
+	w.Header().Set("Vary", "Access-Control-Request-Headers")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Origin, Accept, token")
+	w.Header().Set("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	if err != nil {
